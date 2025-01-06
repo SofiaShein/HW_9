@@ -31,7 +31,10 @@ public class Apartment {
     private double price;
 
     public Apartment() {
+
     }
+
+
 
     public Apartment(String district, String address, double area, int rooms, double price) {
         this.district = district;

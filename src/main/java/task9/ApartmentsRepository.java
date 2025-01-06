@@ -5,11 +5,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-
+import java.util.Optional;
 
 import java.util.List;
 
 public interface ApartmentsRepository extends JpaRepository<Apartment, Long> {
+
+    Optional<Apartment> findById(Long id);
 
     @Modifying
     @Query("UPDATE Apartment a SET a.district= :district, a.address = :address, a.area = :area, a.rooms = :rooms, a.price = :price WHERE a.id = :id")

@@ -7,10 +7,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Optional;
+
 @Controller
 public class MyController {
     static final int ITEMS_PER_PAGE = 6;
@@ -19,6 +22,18 @@ public class MyController {
 
     public MyController(ApartmentsService apartmentsService) {
         this.apartmentsService = apartmentsService;
+    }
+
+    @GetMapping("/apartment/{id}")
+    public String getApartmentById(@PathVariable long id, Model model) {
+        Optional<Apartment> apartmentOptional = apartmentsService.findById(id);
+
+        apartmentOptional.ifPresentOrElse(
+                apartment -> model.addAttribute("apartment", apartment),
+                () -> model.addAttribute("error", "Apartment not found")
+        );
+
+        return apartmentOptional.isPresent() ? "apartmentDetails" : "errorPage";
     }
 
     @GetMapping("/")

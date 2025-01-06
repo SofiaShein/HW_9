@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Pageable;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ApartmentsService {
@@ -14,6 +15,21 @@ public class ApartmentsService {
         this.apartmentsRepository = apartmentsRepository;
     }
 
+    public Apartment getApartmentById(Long id) {
+        return apartmentsRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Apartment with id " + id + " not found"));
+    }
+
+
+    @Transactional(readOnly = true)
+    public Optional<Apartment> findById(long id) {
+        return apartmentsRepository.findById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public Apartment findApartmentById(long id) {
+        return apartmentsRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Apartment not found"));
+    }
 
     @Transactional(readOnly = true)
     public long count() {
